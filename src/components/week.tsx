@@ -5,7 +5,7 @@ interface WeekProps {
     setBinaryWeek: Function;
 }
 
-const week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => {
+const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => {
     const [days, setDays] = useState(new Map<String, Number>())
 
 
@@ -78,9 +78,9 @@ const week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => 
             }
 
             <div className='flex flex-wrap justify-around'>
-                {Array.from(days.keys()).map(day => {
+                {Array.from(days.keys()).map((day, i) => {
                     const val = days.get(day);
-                    return <button className={
+                    return <button key={`btn-${i}`} className={
                         val === 1
                             ? basicBtn + "bg-green-900 hover:bg-green-800"
                             : val === -1
@@ -98,4 +98,4 @@ const week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => 
     )
 }
 
-export default week
+export default Week

@@ -1,7 +1,7 @@
 "use client"
 import Week from '@/components/week'
 import React, { useEffect, useState } from 'react'
-const page = () => {
+const Page = () => {
   const binaryWeeks: string[] = ["0000000", "0000000"];
   const setBinaryWeek = (binaryWeek: string, i: number) => {
     binaryWeeks[i] = binaryWeek
@@ -35,10 +35,10 @@ const page = () => {
         {binaryWeeks.length > 0 && binaryWeeks.map((week, i) => {
 
           if (i === 0) {
-            return <Week isCurrentWeek={true} setBinaryWeek={setBinaryWeek} />
+            return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} />
           }
 
-          return <Week isCurrentWeek={false} setBinaryWeek={setBinaryWeek} />
+          return <Week key={`binaryweek-${i}`} isCurrentWeek={false} setBinaryWeek={setBinaryWeek} />
         })}
 
         <form onSubmit={(e) => handleSubmit(e)} className='flex w-full flex-wrap'>
@@ -49,4 +49,4 @@ const page = () => {
     </main>
   )
 }
-export default page
+export default Page
