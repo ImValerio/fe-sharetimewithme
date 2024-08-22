@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ShareTimeWithMe",
-  description: "Share Time With Me",
+  description: "The easiest way to share your schedule with your friends!",
 };
 
 export default function RootLayout({
