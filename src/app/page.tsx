@@ -47,7 +47,7 @@ const Page = () => {
           })}
           <form onSubmit={(e) => handleSubmit(e)} className='flex w-full flex-wrap'>
             <input type="text" className='flex grow text-2xl p-1 text-black' placeholder='Name...' onChange={(e) => setUsername(e.target.value)} value={username} />
-            <button className='bg-gray-900 hover:bg-gray-800 px-3 py-1 text-2xl md:grow-0 md:w-auto grow my-2'>CREATE</button>
+            <button className='bg-gray-900 hover:bg-gray-800 px-3 py-1 text-2xl md:grow-0 md:w-auto grow my-2 md:my-0'>CREATE</button>
           </form>
         </div>
 
