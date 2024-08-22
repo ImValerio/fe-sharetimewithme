@@ -36,7 +36,7 @@ const Page = () => {
         <div className='w-100 flex justify-center items-center m-2'>
           <img src='logo_lg_blu.png'></img>
         </div>
-        <div className='mx-5'>
+        <div className='mx-5 md:mx-0'>
           {binaryWeeks.length > 0 && binaryWeeks.map((week, i) => {
 
             if (i === 0) {
