@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 
 interface WeekProps {
     isCurrentWeek: boolean;
+    viewMode: boolean;
+    binaryWeek: string;
     setBinaryWeek: Function;
 }
 
-const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => {
+const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek, viewMode = false, binaryWeek = "0000000" }) => {
     const [days, setDays] = useState(new Map<String, Number>())
 
 
-    let binaryWeek = "0000000"
     const basicBtn = "px-5 py-1 text-xl m-1 grow md:grow-0 "
 
     const getWeekDays = (locale: string) => {
@@ -38,7 +39,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => 
             tmpDays.set(day, 0);
         })
 
-        if (isCurrentWeek) {
+        if (isCurrentWeek && !viewMode) {
             Array.from(tmpDays.keys()).forEach((day, i) => {
                 if (now.getDay() - 1 > i) {
                     tmpDays.set(day, -1)
@@ -46,12 +47,19 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => 
             })
 
         }
+        if (viewMode) {
+            Array.from(tmpDays.keys()).forEach((day, i) => {
+                tmpDays.set(day, Number(binaryWeek[i]))
+            })
+        }
         setDays(tmpDays)
 
     }, [])
 
 
     const toggleBtn = (day: String) => {
+        if (viewMode)
+            return
 
         const currentValue = days.get(day)
         if (currentValue === -1)
@@ -77,7 +85,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek }) => 
                 : <h3 className='text-2xl'> Next week:</h3>
             }
 
-            <div className='flex flex-wrap justify-around'>
+            <div className='flex flex-wrap justify-around max-w-2xl'>
                 {Array.from(days.keys()).map((day, i) => {
                     const val = days.get(day);
                     return <button key={`btn-${i}`} className={
