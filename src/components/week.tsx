@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 interface WeekProps {
-    isCurrentWeek: boolean;
-    viewMode: boolean;
-    binaryWeek: string;
-    setBinaryWeek: Function;
+    isCurrentWeek?: boolean;
+    viewMode?: boolean;
+    binaryWeek?: string;
+    setBinaryWeek?: Function;
 }
 
-const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, setBinaryWeek, viewMode = false, binaryWeek = "0000000" }) => {
+const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { } }) => {
     const [days, setDays] = useState(new Map<String, Number>())
 
 

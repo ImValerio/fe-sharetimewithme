@@ -1,4 +1,4 @@
-interface Instance {
+interface Schedule {
     instanceId: boolean
     username: string
     binaryWeeks: string[]
