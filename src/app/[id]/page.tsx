@@ -1,3 +1,4 @@
+"use client"
 import CreateInstance, { PROD_HOST } from '@/components/createInstance'
 import Schedule from '@/components/schedule'
 import { useRouter } from 'next/navigation'
