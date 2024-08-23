@@ -14,7 +14,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     useEffect(() => {
         const checkInstanceId = async () => {
-            const host = process.env.NEXT_PUBLIC_API_HOST ? process.env.NEXT_PUBLIC_API_HOST : "http://localhost:8080"
+            const host = process.env.API_HOST ? process.env.API_HOST : "http://localhost:8080"
             const res = await fetch(host + `/instance/${instanceId}`)
             if (res.status === 200) {
                 const data: Schedule[] = await res.json();
