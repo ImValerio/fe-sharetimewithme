@@ -11,6 +11,7 @@ interface WeekProps {
 
 const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false }) => {
     const [days, setDays] = useState(new Map<String, Number>())
+    const [isMobile, setIsMobile] = useState(false)
 
 
     const basicBtn = isResult ? "px-5 py-1 text-xl m-1 grow md:grow-0 " : "px-3 py-1 m-1 grow md:grow-0 "
@@ -35,6 +36,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     useEffect(() => {
         const now = new Date()
 
+        setIsMobile(window.innerWidth <= 768)
         const tmpDays = new Map<String, Number>()
         getWeekDays("en-Us").map(day => {
             day = formatDay(day)
@@ -56,7 +58,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
         }
         setDays(tmpDays)
 
-    }, [])
+    })
 
 
     const toggleBtn = (day: String) => {
@@ -112,8 +114,8 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     return (
         <div className='w-full flex flex-col justify-center align-center my'>
             {isCurrentWeek
-                ? <h3 className='text-xl md:text-center'>{useCheckMobileScreen() ? "Current week:" : "C"}</h3>
-                : <h3 className='text-xl md:text-center'>{useCheckMobileScreen() ? "Next week:" : "N"}</h3>
+                ? <h3 className='text-xl md:text-center'>{isMobile ? "Current week:" : "C"}</h3>
+                : <h3 className='text-xl md:text-center'>{isMobile ? "Next week:" : "N"}</h3>
             }
             <div className='flex md:flex-col justify-around max-w-2xl'>
                 {Array.from(days.keys()).map((day, i) => {

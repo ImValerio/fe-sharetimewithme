@@ -49,7 +49,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, isResult = false, showSch
 
             </div>
             <div className='flex flex-col p-1'>
-                {schedule.binaryWeeks.length < 2 && <h1 className='text-xl p-2'>Can't calculate result with just one schedule :(</h1>}
+                {schedule.binaryWeeks.length < 2 && <h1 className='text-xl p-2'>Can&apos;t calculate result with just one schedule :(</h1>}
                 {schedule.binaryWeeks.map((binaryWeek, i) => {
                     return (
                         <Week key={i} isCurrentWeek={i === 0 ? true : false} binaryWeek={binaryWeek} viewMode={true} isResult={true} />
