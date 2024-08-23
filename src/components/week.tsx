@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import useCheckMobileScreen from './useCheckMobileScreen';
 
 interface WeekProps {
     isCurrentWeek?: boolean;
     viewMode?: boolean;
     binaryWeek?: string;
     setBinaryWeek?: Function;
+    isResult?: boolean;
 }
 
-const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { } }) => {
+const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false }) => {
     const [days, setDays] = useState(new Map<String, Number>())
 
 
-    const basicBtn = "px-5 py-1 text-xl m-1 grow md:grow-0 "
+    const basicBtn = isResult ? "px-5 py-1 text-xl m-1 grow md:grow-0 " : "px-3 py-1 m-1 grow md:grow-0 "
 
     const getWeekDays = (locale: string) => {
         var baseDate = new Date(Date.UTC(2017, 0, 2)); // just a Monday
@@ -24,7 +26,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     }
 
     const formatDay = (day: string): string => {
-        day = day.substring(0, 3)
+        day = day.substring(0, isResult ? 3 : 2)
         return day.charAt(0).toUpperCase() + day.slice(1);
     }
 
@@ -77,23 +79,51 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
 
     }
 
+    if (isResult) {
+
+        return (
+            <div className='w-full flex flex-col justify-center align-center my-3'>
+                {isCurrentWeek
+                    ? <h3 className='text-2xl'>Current week:</h3>
+                    : <h3 className='text-2xl'> Next week:</h3>
+                }
+
+                <div className='flex flex-wrap justify-around max-w-2xl'>
+                    {Array.from(days.keys()).map((day, i) => {
+                        const val = days.get(day);
+                        return <button key={`btn-${i}`} className={
+                            val === 1
+                                ? basicBtn + "bg-green-900 hover:bg-green-800 border-btm-green"
+                                : val === -1
+                                    ? basicBtn + "bg-gray-700 hover:bg-gray-600 cursor-not-allowed border-btm-gray"
+                                    : basicBtn + "bg-red-900 hover:bg-red-800 border-btm-red"
+                        } disabled={val !== -1 ? undefined : true}
+
+                            onClick={() => toggleBtn(day)}
+                        >{day}</button>
+                    })}
+
+
+                </div>
+            </div>
+        )
+    }
 
     return (
-        <div className='w-full flex flex-col justify-center align-center my-3'>
+        <div className='w-full flex flex-col justify-center align-center my'>
             {isCurrentWeek
-                ? <h3 className='text-2xl'>Current week:</h3>
-                : <h3 className='text-2xl'> Next week:</h3>
+                ? <h3 className='text-xl md:text-center'>{useCheckMobileScreen() ? "Current week:" : "C"}</h3>
+                : <h3 className='text-xl md:text-center'>{useCheckMobileScreen() ? "Next week:" : "N"}</h3>
             }
-
-            <div className='flex flex-wrap justify-around max-w-2xl'>
+            <div className='flex md:flex-col justify-around max-w-2xl'>
                 {Array.from(days.keys()).map((day, i) => {
                     const val = days.get(day);
                     return <button key={`btn-${i}`} className={
                         val === 1
-                            ? basicBtn + "bg-green-900 hover:bg-green-800"
+                            ? basicBtn + "bg-green-900 hover:bg-green-800 border-btm-green"
                             : val === -1
-                                ? basicBtn + "bg-gray-700 hover:bg-gray-600 cursor-not-allowed"
-                                : basicBtn + "bg-red-900 hover:bg-red-800"
+                                ? basicBtn + "bg-gray-700 hover:bg-gray-600 cursor-not-allowed border-btm-gray"
+                                : basicBtn + "bg-red-900 hover:bg-red-800 border-btm-red"
                     } disabled={val !== -1 ? undefined : true}
 
                         onClick={() => toggleBtn(day)}
@@ -104,6 +134,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
             </div>
         </div>
     )
+
 }
 
 export default Week

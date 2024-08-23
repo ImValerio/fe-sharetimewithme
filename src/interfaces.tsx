@@ -1,5 +1,5 @@
 interface Schedule {
-    instanceId: boolean
+    instanceId: string
     username: string
     binaryWeeks: string[]
 }

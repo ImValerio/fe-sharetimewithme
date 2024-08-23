@@ -35,7 +35,7 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
         const data: GenerateInstance = await res.json();
 
         if (instanceId)
-            router.replace(`/${data.instanceId}`)
+            location.reload()
         else
             router.push(`/${data.instanceId}`)
     }
@@ -46,14 +46,14 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
             {binaryWeeks.length > 0 && binaryWeeks.map((week, i) => {
 
                 if (i === 0) {
-                    return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} viewMode={false} />
+                    return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} viewMode={false} isResult={true} />
                 }
 
-                return <Week key={`binaryweek-${i}`} setBinaryWeek={setBinaryWeek} viewMode={false} />
+                return <Week key={`binaryweek-${i}`} setBinaryWeek={setBinaryWeek} viewMode={false} isResult={true} />
             })}
             <form onSubmit={(e) => handleSubmit(e)} className='flex w-full flex-wrap'>
                 <input type="text" className='flex grow text-2xl p-1 text-black' placeholder='Name...' onChange={(e) => setUsername(e.target.value)} value={username} />
-                <button className='bg-gray-900 hover:bg-gray-800 px-3 py-1 text-2xl md:grow-0 md:w-auto grow my-2 md:my-0'>CREATE</button>
+                <button className='bg-gray-900 hover:bg-gray-800 px-3 py-1 text-2xl md:grow-0 md:w-auto grow my-2 md:my-0'>{instanceId ? "ADD" : "CREATE"}</button>
             </form>
         </div>
 
