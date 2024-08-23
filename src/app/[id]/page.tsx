@@ -1,4 +1,5 @@
 "use client"
+// import CreateInstance from '@/components/createInstance'
 import Week from '@/components/week'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -31,7 +32,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         checkInstanceId();
     }, [])
-
     if (isLoading) {
         return (
             <div className='w-full h-full flex justify-center items-center'>
@@ -45,7 +45,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             {schedules.map((schedule, i) => {
                 console.log(schedule)
 
-                return <div className='m-2 bg-gray-800 flex flex-col rounded'>
+                return <div className='m-2 bg-gray-800 flex flex-col rounded' key={i}>
                     <div className='flex justify-end py-2 bg-gray-900'>
                         <h2 className='text-2xl uppercase font-bold tracking-wider mx-2'>{schedule.username}</h2>
                     </div>
@@ -60,6 +60,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </div>
                 </div>
             })}
+
+            {/* <CreateInstance /> */}
+
         </div>
     )
 }
