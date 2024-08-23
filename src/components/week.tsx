@@ -58,7 +58,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
         }
         setDays(tmpDays)
 
-    })
+    }, [])
 
 
     const toggleBtn = (day: String) => {
