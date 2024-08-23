@@ -45,10 +45,10 @@ const Page = () => {
           {binaryWeeks.length > 0 && binaryWeeks.map((week, i) => {
 
             if (i === 0) {
-              return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} editMode={false} binaryWeek={'0000000'} />
+              return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} viewMode={false} binaryWeek={'0000000'} />
             }
 
-            return <Week key={`binaryweek-${i}`} isCurrentWeek={false} setBinaryWeek={setBinaryWeek} editMode={false} binaryWeek={'0000000'} />
+            return <Week key={`binaryweek-${i}`} isCurrentWeek={false} setBinaryWeek={setBinaryWeek} viewMode={false} binaryWeek={'0000000'} />
           })}
           <form onSubmit={(e) => handleSubmit(e)} className='flex w-full flex-wrap'>
             <input type="text" className='flex grow text-2xl p-1 text-black' placeholder='Name...' onChange={(e) => setUsername(e.target.value)} value={username} />
