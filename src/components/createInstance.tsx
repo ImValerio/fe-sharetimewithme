@@ -1,3 +1,4 @@
+"use client"
 import { useState } from 'react'
 import Week from './week'
 import { useRouter } from 'next/navigation'
