@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 interface CreateInstanceProps {
     instanceId?: string
 }
+export const PROD_HOST = "https://be-sharetimewithme-7gjrwponva-uc.a.run.app"
 const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) => {
 
     const router = useRouter()
@@ -21,7 +22,7 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
         e.preventDefault();
         if (!username)
             return
-        const host = process.env.API_HOST ? process.env.API_HOST : "http://localhost:8080"
+        const host = process.env.API_HOST ? process.env.API_HOST : PROD_HOST
         console.log(host)
         const path = instanceId ? "/instance" : "/generate"
         const res = await fetch(host + path,

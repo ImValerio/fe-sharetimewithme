@@ -1,5 +1,4 @@
-"use client"
-import CreateInstance from '@/components/createInstance'
+import CreateInstance, { PROD_HOST } from '@/components/createInstance'
 import Schedule from '@/components/schedule'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -14,7 +13,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     useEffect(() => {
         const checkInstanceId = async () => {
-            const host = process.env.API_HOST ? process.env.API_HOST : "http://localhost:8080"
+            const host = process.env.API_HOST ? process.env.API_HOST : PROD_HOST
             const res = await fetch(host + `/instance/${instanceId}`)
             if (res.status === 200) {
                 const data: Schedule[] = await res.json();
