@@ -1,6 +1,5 @@
 "use client"
 import CreateInstance from '@/components/createInstance'
-import Week from '@/components/week'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -13,29 +12,6 @@ const Page = () => {
     setBinaryWeeks(newBinaryWeeks);
   }
   const [username, setUsername] = useState("")
-
-  useEffect(() => {
-
-  }, [])
-
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(binaryWeeks)
-    if (!username)
-      return
-    const host = process.env.API_HOST ? process.env.API_HOST : "http://localhost:8080"
-    const res = await fetch(host + "/generate",
-      {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ username, binaryWeeks })
-      })
-    const data: GenerateInstance = await res.json();
-
-    router.push(`/${data.instanceId}`)
-
-  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between w-full">

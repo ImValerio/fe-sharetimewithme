@@ -21,7 +21,7 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
         e.preventDefault();
         if (!username)
             return
-        const host = process.env.API_HOST ? process.env.API_HOST : "http://localhost:8080"
+        const host = process.env.NEXT_PUBLIC_API_HOST ? process.env.NEXT_PUBLIC_API_HOST : "http://localhost:8080"
         console.log(host)
         const path = instanceId ? "/instance" : "/generate"
         const res = await fetch(host + path,
