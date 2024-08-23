@@ -18,10 +18,10 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(binaryWeeks)
         if (!username)
             return
         const host = process.env.API_HOST ? process.env.API_HOST : "http://localhost:8080"
+        console.log(host)
         const path = instanceId ? "/instance" : "/generate"
         const res = await fetch(host + path,
             {
