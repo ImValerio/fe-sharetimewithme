@@ -46,7 +46,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         <div className='w-full h-full flex justify-center items-center flex-col'>
             <div className='overflow-y-auto'>
                 {schedules.map((schedule, i) => {
-                    return <Schedule key={i} schedule={schedule} />
+                    return <Schedule key={`schedule-${i}`} schedule={schedule} />
                 })}
             </div>
 
