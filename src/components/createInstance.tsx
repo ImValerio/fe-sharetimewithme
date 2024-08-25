@@ -1,7 +1,9 @@
 "use client"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Week from './week'
 import { useRouter } from 'next/navigation'
+import Loader from './loader'
+import { useLoading } from './loadingContext'
 interface CreateInstanceProps {
     instanceId?: string
 }
@@ -16,9 +18,10 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
         setBinaryWeeks(newBinaryWeeks);
     }
     const [username, setUsername] = useState("")
-
+    const { isLoading, setIsLoading } = useLoading();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        setIsLoading(true)
         e.preventDefault();
         if (!username)
             return
@@ -34,11 +37,19 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
 
         const data: GenerateInstance = await res.json();
 
+        setIsLoading(false)
         if (instanceId)
             location.reload()
         else
             router.push(`/${data.instanceId}`)
     }
+
+    useEffect(() => {
+        setIsLoading(false)
+    }, [])
+
+    if (isLoading)
+        return <Loader />
 
     return (
 

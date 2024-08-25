@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Hairline&family=Monoton&display=swap');
+
 html,
 body {
   width: 100%;
@@ -56,6 +58,48 @@ body {
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); /* Material Design elevation z=2 */
   z-index: 1000;
 }
+
+.montserrat-regular {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; 
+  font-style: normal;
+}
+
+.bungee-hairline-regular {
+  font-family: "Bungee Hairline";
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 80px;
+  aspect-ratio: 1;
+  display: flex;
+  color: white;
+  border: 4px solid;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle 5px, currentColor 95%, transparent),
+    linear-gradient(currentColor 50%,#0000 0) 50%/4px 60% no-repeat;
+  animation: l1 3s infinite linear;
+}
+.loader:before {
+  content: "";
+  flex: 1;
+  background:linear-gradient(currentColor 50%,#0000 0) 50%/4px 80% no-repeat;
+  animation: inherit;
+}
+
+
+
+@keyframes l1 {
+  100% {transform: rotate(1turn)}
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

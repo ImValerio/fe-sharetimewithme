@@ -1,15 +1,15 @@
 "use client"
 import CreateInstance, { PROD_HOST } from '@/components/createInstance'
+import { useLoading } from '@/components/loadingContext'
 import Schedule from '@/components/schedule'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const Page = ({ params }: { params: { id: string } }) => {
-
+    const { isLoading, setIsLoading } = useLoading();
     const router = useRouter()
 
     const instanceId = params.id
-    const [isLoading, setIsLoading] = useState(true)
     const [schedules, setSchedules] = useState<Schedule[]>([])
     const [showSchedules, setShowSchedules] = useState<boolean>(false)
     const [resultWeeks, setResultWeeks] = useState<string[]>([])
@@ -50,6 +50,8 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     useEffect(() => {
         const checkInstanceId = async () => {
+            setIsLoading(true)
+
             const host = process.env.API_HOST ? process.env.API_HOST : PROD_HOST
             const res = await fetch(host + `/instance/${instanceId}`)
             if (res.status === 200) {
@@ -65,19 +67,12 @@ const Page = ({ params }: { params: { id: string } }) => {
                 return
             }
 
+            setIsLoading(false)
             router.push("/")
 
         }
-
         checkInstanceId();
     }, [])
-    if (isLoading) {
-        return (
-            <div className='w-full h-full flex justify-center items-center'>
-                <h1 className='text-3xl'>Loading...</h1>
-            </div>
-        )
-    }
 
     return (
         <div className='w-full h-full flex justify-center items-center '>
