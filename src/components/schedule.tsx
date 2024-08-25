@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Week from './week'
-import { HOST } from '@/app/layout'
-import Modal from './modal'
+import { HOST } from '@/components/utils'
 
 interface ScheduleProps {
     schedule: Schedule

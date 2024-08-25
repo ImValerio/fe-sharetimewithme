@@ -3,7 +3,7 @@ import CreateInstance from '@/components/createInstance'
 import Schedule from '@/components/schedule'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { HOST } from '../layout'
+import { HOST } from '@/components/utils'
 
 const Page = ({ params }: { params: { id: string } }) => {
 

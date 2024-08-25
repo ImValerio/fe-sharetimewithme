@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Week from './week'
 import { useRouter } from 'next/navigation'
-import { HOST } from '@/app/layout'
+import { HOST } from '@/components/utils'
 interface CreateInstanceProps {
     instanceId?: string
     setSchedules?: Function
