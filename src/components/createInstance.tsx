@@ -2,11 +2,14 @@
 import { useState } from 'react'
 import Week from './week'
 import { useRouter } from 'next/navigation'
+import { HOST } from '@/app/layout'
 interface CreateInstanceProps {
     instanceId?: string
+    setSchedules?: Function
+    calcResultSchedule?: Function
+    setError: Function
 }
-export const PROD_HOST = "https://be-sharetimewithme-7gjrwponva-uc.a.run.app"
-const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) => {
+const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setSchedules, calcResultSchedule, setError }) => {
 
     const router = useRouter()
     const [binaryWeeks, setBinaryWeeks] = useState(["0000000", "0000000"])
@@ -22,20 +25,35 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null }) =>
         e.preventDefault();
         if (!username)
             return
-        const host = process.env.API_HOST ? process.env.API_HOST : PROD_HOST
-        console.log(host)
         const path = instanceId ? "/instance" : "/generate"
-        const res = await fetch(host + path,
+        const schedule = { instanceId, username, binaryWeeks }
+        const res = await fetch(HOST + path,
             {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ instanceId, username, binaryWeeks })
+                body: JSON.stringify(schedule)
             })
 
+        setUsername("")
+        if (res.status !== 200) {
+            const error = await res.text()
+            setError(error)
+            return
+        }
+
+        setError("")
         const data: GenerateInstance = await res.json();
 
-        if (instanceId)
-            location.reload()
+        if (instanceId && setSchedules) {
+
+            setSchedules((schedules: Schedule[]) => {
+
+                const rv = [...schedules, schedule]
+                if (calcResultSchedule)
+                    calcResultSchedule(rv)
+                return rv
+            })
+        }
         else
             router.push(`/${data.instanceId}`)
     }

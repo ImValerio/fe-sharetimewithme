@@ -1,14 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Week from './week'
+import { HOST } from '@/app/layout'
+import Modal from './modal'
 
 interface ScheduleProps {
     schedule: Schedule
+    setSchedules?: Function
     isResult?: boolean
     showSchedules?: boolean
     setShowSchedules?: Function
+    calcResultSchedule?: Function
 }
 
-const Schedule: React.FC<ScheduleProps> = ({ schedule, isResult = false, showSchedules = false, setShowSchedules = () => { } }) => {
+const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultSchedule, isResult = false, showSchedules = false, setShowSchedules = () => { } }) => {
+
+    const deleteRecord = async () => {
+        const resModal = confirm("Do you really want to delete this schedule?")
+        if (!resModal)
+            return
+
+        const url = `${HOST}/instance/${schedule.instanceId}/${schedule.username}`
+
+        const res = await fetch(url, { method: "DELETE" })
+
+        if (res.status === 200 && setSchedules) {
+            setSchedules((schedules: Schedule[]) => {
+                const rv = [...schedules].filter(el => el.username !== schedule.username);
+                if (calcResultSchedule)
+                    calcResultSchedule(rv)
+
+                return rv
+            });
+        }
+    }
+
+
     if (isResult) {
 
         return <div className='m-2 bg-gray-800 flex flex-col rounded' >
@@ -63,8 +89,9 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, isResult = false, showSch
 
     return (
         <div className='m-2 bg-gray-800 flex flex-col rounded' >
-            <div className='flex justify-center py-2 bg-gray-900'>
-                <h2 className='text-xl uppercase font-bold tracking-wider mx-2 '>{schedule.username}</h2>
+            <div className='flex justify-between items-center bg-gray-900'>
+                <h2 className='text-xl uppercase font-bold tracking-wider mx-2 p-1'>{schedule.username}</h2>
+                <span className='bg-red-700 h-full px-2 py-1' onClick={() => deleteRecord()}>X</span>
             </div>
             <div className='flex w-100 p-1 flex-col md:flex-row'>
                 {schedule.binaryWeeks.map((binaryWeek, i) => {

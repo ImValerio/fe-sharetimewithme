@@ -1,8 +1,9 @@
 "use client"
-import CreateInstance, { PROD_HOST } from '@/components/createInstance'
+import CreateInstance from '@/components/createInstance'
 import Schedule from '@/components/schedule'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { HOST } from '../layout'
 
 const Page = ({ params }: { params: { id: string } }) => {
 
@@ -13,10 +14,13 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [schedules, setSchedules] = useState<Schedule[]>([])
     const [showSchedules, setShowSchedules] = useState<boolean>(false)
     const [resultWeeks, setResultWeeks] = useState<string[]>([])
+    const [error, setError] = useState("")
 
     const calcResultSchedule = (schedules: Schedule[]) => {
-        if (schedules.length < 2)
+        if (schedules.length < 2) {
+            setResultWeeks([])
             return
+        }
 
         const binaryWeeksMaps = [new Map<number, number>(), new Map<number, number>()]
         let rv: string[] = []
@@ -45,13 +49,13 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             rv.push(resultString)
         })
+        console.log(rv)
         setResultWeeks(rv)
     }
 
     useEffect(() => {
         const checkInstanceId = async () => {
-            const host = process.env.API_HOST ? process.env.API_HOST : PROD_HOST
-            const res = await fetch(host + `/instance/${instanceId}`)
+            const res = await fetch(HOST + `/instance/${instanceId}`)
             if (res.status === 200) {
                 const data: Schedule[] = await res.json();
 
@@ -85,11 +89,16 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <Schedule schedule={{ binaryWeeks: resultWeeks, username: "RESULT", instanceId: "" }} isResult={true} showSchedules={showSchedules} setShowSchedules={setShowSchedules} />
                 {showSchedules && <div className='overflow-y-auto w-full flex justify-around '>
                     {schedules.map((schedule, i) => {
-                        return <Schedule key={`schedule-${i}`} schedule={schedule} />
+                        return <Schedule key={`schedule-${i}`} schedule={schedule} setSchedules={setSchedules} calcResultSchedule={calcResultSchedule} />
                     })}
                 </div>}
 
-                <CreateInstance instanceId={instanceId} />
+                {error &&
+                    <div className='my-2'>
+                        <span className='text-red-500'>ERROR: </span>{error}
+                    </div>}
+                <CreateInstance instanceId={instanceId} setSchedules={setSchedules}
+                    calcResultSchedule={calcResultSchedule} setError={setError} />
             </div>
         </div >
     )
