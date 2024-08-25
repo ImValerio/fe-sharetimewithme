@@ -27,7 +27,7 @@ export default function RootLayout({
         <meta name="author" content="Valerio Valletta" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className={inter.className}>
+      <body className={inter.className + " flex flex-col justify-between"}>
 
         <nav className='w-full p-2 bg-gray-900 text-white text-center flex justify-start items-center'>
 
