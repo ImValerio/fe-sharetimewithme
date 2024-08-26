@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import useCheckMobileScreen from './useCheckMobileScreen';
 
 interface WeekProps {
     isCurrentWeek?: boolean;
@@ -7,14 +6,16 @@ interface WeekProps {
     binaryWeek?: string;
     setBinaryWeek?: Function;
     isResult?: boolean;
+    isFormView?: boolean;
+    creationDate?: string
 }
 
-const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false }) => {
+const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false, isFormView = false, creationDate }) => {
     const [days, setDays] = useState(new Map<String, Number>())
     const [isMobile, setIsMobile] = useState(false)
 
 
-    const basicBtn = isResult ? "px-5 py-1 text-xl m-1 grow md:grow-0 " : "px-3 py-1 m-1 grow md:grow-0 "
+    const basicBtn = isResult || isFormView ? "px-5 py-1 text-xl m-1 " + (isFormView ? "grow " : "") : "px-3 py-1 m-1 md:grow-0 "
 
     const getWeekDays = (locale: string) => {
         var baseDate = new Date(Date.UTC(2017, 0, 2)); // just a Monday
@@ -32,9 +33,8 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     }
 
 
-
     useEffect(() => {
-        const now = new Date()
+        const now = creationDate ? new Date(creationDate) : new Date()
 
         setIsMobile(window.innerWidth <= 768)
         const tmpDays = new Map<String, Number>()
@@ -82,6 +82,37 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     }
 
     if (isResult) {
+        if (binaryWeek === "0000000")
+            return <></>
+        return (
+            <div className='w-full flex flex-col justify-center align-center my-3'>
+                {isCurrentWeek
+                    ? <h3 className='text-2xl'>Current week:</h3>
+                    : <h3 className='text-2xl'> Next week:</h3>
+                }
+
+                <div className='flex flex-wrap justify-start max-w-2xl'>
+                    {Array.from(days.keys()).map((day, i) => {
+                        const val = days.get(day);
+                        return <button key={`btn-${i}`} className={
+                            val === 1
+                                ? basicBtn + "bg-green-900 hover:bg-green-800 border-btm-green"
+                                : val === -1
+                                    ? basicBtn + "bg-gray-700 hover:bg-gray-600 cursor-not-allowed border-btm-gray"
+                                    : basicBtn + "bg-red-900 hover:bg-red-800 border-btm-red hidden"
+                        } disabled={val !== -1 ? undefined : true}
+
+                            onClick={() => toggleBtn(day)}
+                        >{day}</button>
+                    })}
+
+
+                </div>
+            </div>
+        )
+    }
+
+    if (isFormView) {
 
         return (
             <div className='w-full flex flex-col justify-center align-center my-3'>
@@ -98,7 +129,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
                                 ? basicBtn + "bg-green-900 hover:bg-green-800 border-btm-green"
                                 : val === -1
                                     ? basicBtn + "bg-gray-700 hover:bg-gray-600 cursor-not-allowed border-btm-gray"
-                                    : basicBtn + "bg-red-900 hover:bg-red-800 border-btm-red"
+                                    : basicBtn + "bg-red-900 hover:bg-red-800 border-btm-red "
                         } disabled={val !== -1 ? undefined : true}
 
                             onClick={() => toggleBtn(day)}

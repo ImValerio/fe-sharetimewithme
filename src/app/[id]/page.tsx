@@ -49,7 +49,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             rv.push(resultString)
         })
-        console.log(rv)
         setResultWeeks(rv)
     }
 
@@ -86,7 +85,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     return (
         <div className='w-full h-full flex justify-center items-center '>
             <div className='h-full w-full flex-col max-w-2xl justify-center items-center'>
-                <Schedule schedule={{ binaryWeeks: resultWeeks, username: "RESULT", instanceId: "" }} isResult={true} showSchedules={showSchedules} setShowSchedules={setShowSchedules} />
+                <Schedule schedule={{ binaryWeeks: resultWeeks, username: "RESULT", instanceId: "", creationDate: schedules[0].creationDate }} isResult={true} showSchedules={showSchedules} setShowSchedules={setShowSchedules} />
                 {showSchedules && <div className='overflow-y-auto w-full flex justify-around '>
                     {schedules.map((schedule, i) => {
                         return <Schedule key={`schedule-${i}`} schedule={schedule} setSchedules={setSchedules} calcResultSchedule={calcResultSchedule} />
@@ -98,7 +97,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         <span className='text-red-500'>ERROR: </span>{error}
                     </div>}
                 <CreateInstance instanceId={instanceId} setSchedules={setSchedules}
-                    calcResultSchedule={calcResultSchedule} setError={setError} />
+                    calcResultSchedule={calcResultSchedule} setError={setError} creationDate={schedules[0].creationDate} />
             </div>
         </div >
     )

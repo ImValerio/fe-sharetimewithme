@@ -8,8 +8,9 @@ interface CreateInstanceProps {
     setSchedules?: Function
     calcResultSchedule?: Function
     setError: Function
+    creationDate?: string
 }
-const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setSchedules, calcResultSchedule, setError }) => {
+const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setSchedules, calcResultSchedule, setError, creationDate }) => {
 
     const router = useRouter()
     const [binaryWeeks, setBinaryWeeks] = useState(["0000000", "0000000"])
@@ -25,9 +26,8 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
         e.preventDefault();
         if (!username)
             return
-        const path = instanceId ? "/instance" : "/generate"
         const schedule = { instanceId, username, binaryWeeks }
-        const res = await fetch(HOST + path,
+        const res = await fetch(HOST + "/instance",
             {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
@@ -64,10 +64,10 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
             {binaryWeeks.length > 0 && binaryWeeks.map((week, i) => {
 
                 if (i === 0) {
-                    return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} viewMode={false} isResult={true} />
+                    return <Week key={`binaryweek-${i}`} isCurrentWeek={true} setBinaryWeek={setBinaryWeek} viewMode={false} isFormView={true} creationDate={creationDate} />
                 }
 
-                return <Week key={`binaryweek-${i}`} setBinaryWeek={setBinaryWeek} viewMode={false} isResult={true} />
+                return <Week key={`binaryweek-${i}`} setBinaryWeek={setBinaryWeek} viewMode={false} isFormView={true} />
             })}
             <form onSubmit={(e) => handleSubmit(e)} className='flex w-full flex-wrap'>
                 <input type="text" className='flex grow text-2xl p-1 text-black' placeholder='Name...' onChange={(e) => setUsername(e.target.value)} value={username} />
