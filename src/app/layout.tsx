@@ -39,6 +39,7 @@ export default function RootLayout({
             </h3>
           </div>
         </nav>
+        <Analytics />
         {children}
         <footer className='w-full p-2 bg-gray-900 text-white text-center'>Made with ❤️ by <a href='https://www.valeriovalletta.it'>Valerio Valletta</a></footer>
       </body>
