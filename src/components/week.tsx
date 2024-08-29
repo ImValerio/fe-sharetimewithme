@@ -32,8 +32,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
         return day.charAt(0).toUpperCase() + day.slice(1);
     }
 
-
-    useEffect(() => {
+    const init = () => {
         const now = creationDate ? new Date(creationDate) : new Date()
 
         setIsMobile(window.innerWidth <= 768)
@@ -58,7 +57,13 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
         }
         setDays(tmpDays)
 
-    }, [])
+
+    }
+
+
+    useEffect(() => {
+        init()
+    }, [binaryWeek])
 
 
     const toggleBtn = (day: String) => {
@@ -75,7 +80,6 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
             rv.forEach((val) => binaryWeek = binaryWeek + (val === -1 ? 0 : val))
             setBinaryWeek(binaryWeek, isCurrentWeek ? 0 : 1)
 
-            console.log(binaryWeek)
             return rv
         })
 

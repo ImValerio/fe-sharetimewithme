@@ -65,16 +65,27 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
                             }, 3000);
                         });
                     }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
                     </button>
                     <button onClick={() => setShowSchedules(!showSchedules)} className='text-2xl uppercase font-bold tracking-wider mx-2'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                     </button>
                 </div>
 
             </div>
             <div className='flex flex-col p-1'>
                 {schedule.binaryWeeks.length < 2 && <h1 className='text-xl p-2'>Can&apos;t calculate result with just one schedule :(</h1>}
+                {schedule.binaryWeeks.length >= 2 && schedule.binaryWeeks.every(week => week === "0000000") && (
+                    <>
+                        < h1 className='text-xl p-2'>There are no days that match all the schedules, but these are the most popular ones:</h1>
+                        {schedule.backupWeeks && schedule.backupWeeks.map((binaryWeek, i) => {
+                            return (
+                                <Week key={i} isCurrentWeek={i === 0 ? true : false} binaryWeek={binaryWeek} viewMode={true} isResult={true} />
+                            )
+
+                        })}
+                    </>
+                )}
                 {schedule.binaryWeeks.map((binaryWeek, i) => {
                     return (
                         <Week key={i} isCurrentWeek={i === 0 ? true : false} binaryWeek={binaryWeek} viewMode={true} isResult={true} />
@@ -83,14 +94,14 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
                 })}
 
             </div>
-        </div>
+        </div >
     }
 
     return (
         <div className='m-2 bg-gray-800 flex flex-col rounded' >
             <div className='flex justify-between items-center bg-gray-900'>
                 <h2 className='text-xl uppercase font-bold tracking-wider mx-2 p-1'>{schedule.username}</h2>
-                <span className='bg-red-700 h-full px-2 py-1' onClick={() => deleteRecord()}>X</span>
+                <span className='bg-red-700 h-full px-2 py-1 cursor-pointer' onClick={() => deleteRecord()}>X</span>
             </div>
             <div className='flex w-100 p-1 flex-col md:flex-row'>
                 {schedule.binaryWeeks.map((binaryWeek, i) => {

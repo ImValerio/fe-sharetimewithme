@@ -14,6 +14,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [schedules, setSchedules] = useState<Schedule[]>([])
     const [showSchedules, setShowSchedules] = useState<boolean>(false)
     const [resultWeeks, setResultWeeks] = useState<string[]>([])
+    const [backupWeeks, setBackupWeeks] = useState<string[]>([])
     const [error, setError] = useState("")
 
     const calcResultSchedule = (schedules: Schedule[]) => {
@@ -41,15 +42,37 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         });
 
+
+        setResultWeeks(getResultWeek(binaryWeeksMaps, schedules.length))
+        if (resultWeeks.every(week => week === "0000000")) {
+            let upperBound = schedules.length - 1
+            let rv: string[] = []
+            while (upperBound > 0 && (rv.length === 0 || rv.every(week => week === "0000000"))) {
+                rv = getResultWeek(binaryWeeksMaps, upperBound)
+                upperBound--;
+            }
+
+            setBackupWeeks(rv)
+        } else {
+            setBackupWeeks([])
+        }
+
+        console.log(binaryWeeksMaps, schedules, resultWeeks)
+
+    }
+
+    const getResultWeek = (binaryWeeksMaps: Map<number, number>[], upperBound: number) => {
+        const rv: string[] = []
         binaryWeeksMaps.map(maps => {
             let resultString = "";
             Array.from(maps.values()).forEach(value => {
-                resultString += (value === schedules.length) ? "1" : "0";
+                resultString += (value === upperBound) ? "1" : "0";
             });
 
             rv.push(resultString)
         })
-        setResultWeeks(rv)
+        console.log("RESULT WEEK:", rv)
+        return rv
     }
 
     useEffect(() => {
@@ -74,6 +97,8 @@ const Page = ({ params }: { params: { id: string } }) => {
 
         checkInstanceId();
     }, [])
+
+
     if (isLoading) {
         return (
             <div className='w-full h-full flex justify-center items-center'>
@@ -85,7 +110,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     return (
         <div className='w-full h-full flex justify-center items-center '>
             <div className='h-full w-full flex-col max-w-2xl justify-center items-center'>
-                <Schedule schedule={{ binaryWeeks: resultWeeks, username: "RESULT", instanceId: "", creationDate: schedules[0].creationDate }} isResult={true} showSchedules={showSchedules} setShowSchedules={setShowSchedules} />
+                <Schedule schedule={{ binaryWeeks: resultWeeks, username: "RESULT", instanceId: "", backupWeeks: backupWeeks }} isResult={true} showSchedules={showSchedules} setShowSchedules={setShowSchedules} />
                 {showSchedules && <div className='overflow-y-auto w-full flex justify-around '>
                     {schedules.map((schedule, i) => {
                         return <Schedule key={`schedule-${i}`} schedule={schedule} setSchedules={setSchedules} calcResultSchedule={calcResultSchedule} />
@@ -95,7 +120,8 @@ const Page = ({ params }: { params: { id: string } }) => {
                 {error &&
                     <div className='my-2'>
                         <span className='text-red-500'>ERROR: </span>{error}
-                    </div>}
+                    </div>
+                }
                 <CreateInstance instanceId={instanceId} setSchedules={setSchedules}
                     calcResultSchedule={calcResultSchedule} setError={setError} creationDate={schedules[0].creationDate} />
             </div>
