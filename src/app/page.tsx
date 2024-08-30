@@ -1,10 +1,15 @@
 "use client"
 import CreateInstance from '@/components/createInstance'
+import Loader from '@/components/loader'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const Page = () => {
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  if (isLoading)
+    return <Loader />
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between w-full">
@@ -13,7 +18,7 @@ const Page = () => {
           <img src='logo_lg_blu.png' />
         </div>
         {error}
-        <CreateInstance setError={setError} />
+        <CreateInstance setError={setError} setIsLoading={setIsLoading} />
 
       </div>
     </main>

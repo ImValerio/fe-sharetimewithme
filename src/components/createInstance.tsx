@@ -3,14 +3,16 @@ import { useState } from 'react'
 import Week from './week'
 import { useRouter } from 'next/navigation'
 import { HOST } from '@/components/utils'
+import Loader from './loader'
 interface CreateInstanceProps {
     instanceId?: string
     setSchedules?: Function
     calcResultSchedule?: Function
     setError: Function
+    setIsLoading: Function
     creationDate?: string
 }
-const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setSchedules, calcResultSchedule, setError, creationDate }) => {
+const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setSchedules, calcResultSchedule, setError, creationDate, setIsLoading }) => {
 
     const router = useRouter()
     const [binaryWeeks, setBinaryWeeks] = useState(["0000000", "0000000"])
@@ -26,6 +28,7 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
         e.preventDefault();
         if (!username)
             return
+        setIsLoading(true)
         const schedule = { instanceId, username, binaryWeeks }
         const res = await fetch(HOST + "/instance",
             {
@@ -44,6 +47,7 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
         setError("")
         const data: GenerateInstance = await res.json();
 
+        setIsLoading(false)
         if (instanceId && setSchedules) {
 
             setSchedules((schedules: Schedule[]) => {

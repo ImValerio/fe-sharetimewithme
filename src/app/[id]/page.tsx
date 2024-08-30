@@ -4,6 +4,7 @@ import Schedule from '@/components/schedule'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { HOST } from '@/components/utils'
+import Loader from '@/components/loader'
 
 const Page = ({ params }: { params: { id: string } }) => {
 
@@ -57,7 +58,6 @@ const Page = ({ params }: { params: { id: string } }) => {
             setBackupWeeks([])
         }
 
-        console.log(binaryWeeksMaps, schedules, resultWeeks)
 
     }
 
@@ -71,7 +71,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             rv.push(resultString)
         })
-        console.log("RESULT WEEK:", rv)
         return rv
     }
 
@@ -101,9 +100,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     if (isLoading) {
         return (
-            <div className='w-full h-full flex justify-center items-center'>
-                <h1 className='text-3xl'>Loading...</h1>
-            </div>
+            <Loader />
         )
     }
 
@@ -123,7 +120,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </div>
                 }
                 <CreateInstance instanceId={instanceId} setSchedules={setSchedules}
-                    calcResultSchedule={calcResultSchedule} setError={setError} creationDate={schedules[0].creationDate} />
+                    calcResultSchedule={calcResultSchedule} setError={setError} creationDate={schedules[0].creationDate} setIsLoading={setIsLoading} />
             </div>
         </div >
     )
