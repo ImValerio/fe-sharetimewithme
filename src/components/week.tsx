@@ -7,10 +7,11 @@ interface WeekProps {
     setBinaryWeek?: Function;
     isResult?: boolean;
     isFormView?: boolean;
+    isBackupWeek?: boolean;
     creationDate?: string
 }
 
-const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false, isFormView = false, creationDate }) => {
+const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false, isFormView = false, creationDate, isBackupWeek = false }) => {
     const [days, setDays] = useState(new Map<String, Number>())
     const [isMobile, setIsMobile] = useState(false)
 
@@ -90,7 +91,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
             return <></>
         return (
             <div className='w-full flex flex-col justify-center align-center my-3'>
-                {isCurrentWeek
+                {!isBackupWeek && isCurrentWeek
                     ? <h3 className='text-2xl'>Current week:</h3>
                     : <h3 className='text-2xl'> Next week:</h3>
                 }

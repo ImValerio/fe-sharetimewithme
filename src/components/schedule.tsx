@@ -80,7 +80,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
                         < h1 className='text-xl p-2'>There are no days that match all the schedules, but these are the most popular ones:</h1>
                         {schedule.backupWeeks && schedule.backupWeeks.map((binaryWeek, i) => {
                             return (
-                                <Week key={i} isCurrentWeek={i === 0 ? true : false} binaryWeek={binaryWeek} viewMode={true} isResult={true} />
+                                <Week key={i} isCurrentWeek={i === 0 ? true : false} binaryWeek={binaryWeek} viewMode={true} isResult={true} isBackupWeek={true} />
                             )
 
                         })}
