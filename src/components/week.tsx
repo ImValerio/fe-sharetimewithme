@@ -91,9 +91,9 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
             return <></>
         return (
             <div className='w-full flex flex-col justify-center align-center my-3'>
-                {!isBackupWeek && isCurrentWeek
-                    ? <h3 className='text-2xl'>Current week:</h3>
-                    : <h3 className='text-2xl'> Next week:</h3>
+                {isCurrentWeek
+                    ? <h3 className={isBackupWeek ? 'text-xl' : 'text-2xl'}>Current week:</h3>
+                    : <h3 className={isBackupWeek ? 'text-xl' : 'text-2xl'}> Next week:</h3>
                 }
 
                 <div className='flex flex-wrap justify-start max-w-2xl'>
