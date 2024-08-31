@@ -33,7 +33,7 @@ export default function RootLayout({
 
 
           <div onClick={() => router.push("/")} className="flex items-center cursor-pointer">
-            <img className="max-w-10" src='logo_lg_blu.png' />
+            <img className="max-w-10" src='logo_red.png' />
             <h3 className="mx-2 text-xl">
               ShareTimeWithMe
             </h3>

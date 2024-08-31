@@ -17,12 +17,8 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: radial-gradient(circle, rgb(10 60 202) 0%, #042e52 100%);
+
 }
 
 *:focus {
@@ -90,6 +86,13 @@ body {
   background:linear-gradient(currentColor 50%,#0000 0) 50%/4px 80% no-repeat;
   animation: inherit;
 }
+
+input[type='text']{
+  background:  transparent;
+  border-bottom: 2px solid black;
+  color: white;
+}
+
 
 @keyframes l1 {
   100% {transform: rotate(1turn)}

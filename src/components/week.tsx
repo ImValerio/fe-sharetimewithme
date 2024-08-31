@@ -16,7 +16,7 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     const [isMobile, setIsMobile] = useState(false)
 
 
-    const basicBtn = isResult || isFormView ? "px-5 py-1 text-xl m-1 " + (isFormView ? "grow " : "") : "px-3 py-1 m-1 md:grow-0 "
+    const basicBtn = isResult || isFormView ? "px-5 py-1 text-xl m-1 rounded " + (isFormView ? "grow " : "") : "px-3 py-1 m-1 md:grow-0 rounded "
 
     const getWeekDays = (locale: string) => {
         var baseDate = new Date(Date.UTC(2017, 0, 2)); // just a Monday
