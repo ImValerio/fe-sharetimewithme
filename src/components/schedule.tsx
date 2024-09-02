@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Week from './week'
 import { HOST } from '@/components/utils'
+import { useRouter } from 'next/navigation'
 
 interface ScheduleProps {
     schedule: Schedule
@@ -13,6 +14,7 @@ interface ScheduleProps {
 
 const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultSchedule, isResult = false, showSchedules = false, setShowSchedules = () => { } }) => {
 
+    const router = useRouter()
     const deleteRecord = async () => {
         const resModal = confirm("Do you really want to delete this schedule?")
         if (!resModal)
@@ -25,6 +27,8 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
         if (res.status === 200 && setSchedules) {
             setSchedules((schedules: Schedule[]) => {
                 const rv = [...schedules].filter(el => el.username !== schedule.username);
+                if (rv.length <= 0)
+                    router.push("/")
                 if (calcResultSchedule)
                     calcResultSchedule(rv)
 
