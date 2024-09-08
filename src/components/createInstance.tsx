@@ -47,7 +47,6 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
         setError("")
         const data: GenerateInstance = await res.json();
 
-        setIsLoading(false)
         if (instanceId && setSchedules) {
 
             setSchedules((schedules: Schedule[]) => {
@@ -60,6 +59,8 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
         }
         else
             router.push(`/${data.instanceId}`)
+
+        setIsLoading(false)
     }
 
     return (
