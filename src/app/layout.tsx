@@ -1,12 +1,16 @@
 "use client"
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Major_Mono_Display } from "next/font/google";
 import "./globals.css";
 import { useRouter } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react"
 
 
 const inter = Inter({ subsets: ["latin"] });
+const major = Major_Mono_Display({
+  subsets: ['latin'],
+  weight: "400"
+});
 // export const metadata: Metadata = {
 //   title: "ShareTimeWithMe",
 //   description: "The easiest way to share your schedule with your friends!",
@@ -34,8 +38,8 @@ export default function RootLayout({
 
           <div onClick={() => router.push("/")} className="flex items-center cursor-pointer">
             <img className="max-w-10" src='logo_red.png' />
-            <h3 className="mx-2 text-xl">
-              ShareTimeWithMe
+            <h3 className={major.className + " mx-2 text-xl"}>
+              Share Time With Me
             </h3>
           </div>
         </nav>
