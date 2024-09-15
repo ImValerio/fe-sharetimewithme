@@ -56,16 +56,17 @@ const CreateInstance: React.FC<CreateInstanceProps> = ({ instanceId = null, setS
                     calcResultSchedule(rv)
                 return rv
             })
+
+            setIsLoading(false)
         }
         else
             router.push(`/${data.instanceId}`)
 
-        setIsLoading(false)
     }
 
     return (
 
-        <div className='mx-5 md:mx-0'>
+        <div className='mx-5 md:mx-0 animate__animated animate__fadeInUp'>
             {binaryWeeks.length > 0 && binaryWeeks.map((week, i) => {
 
                 if (i === 0) {

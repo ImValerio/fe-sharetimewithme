@@ -1,9 +1,10 @@
 "use client"
-import type { Metadata } from "next";
 import { Inter, Major_Mono_Display } from "next/font/google";
 import "./globals.css";
 import { useRouter } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react"
+import 'animate.css';
+
 
 
 const inter = Inter({ subsets: ["latin"] });

@@ -40,7 +40,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
 
     if (isResult) {
 
-        return <div className='m-2 bg-gray-800 flex flex-col rounded' >
+        return <div className='m-2 bg-gray-800 flex flex-col rounded animate__animated animate__fadeInDown' >
             <div className='flex justify-between py-2 bg-blue-900'>
                 <h2 className='text-2xl uppercase font-bold tracking-wider mx-2'>{schedule.username}</h2>
                 <div>
@@ -102,7 +102,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
     }
 
     return (
-        <div className='m-2 bg-gray-800 flex flex-col rounded' >
+        <div className='m-2 bg-gray-800 flex flex-col rounded animate__animated animate__fadeInDown' >
             <div className='flex justify-between items-center bg-gray-900'>
                 <h2 className='text-xl uppercase font-bold tracking-wider mx-2 p-1'>{schedule.username}</h2>
                 <span className='bg-red-700 h-full px-2 py-1 cursor-pointer' onClick={() => deleteRecord()}>X</span>
