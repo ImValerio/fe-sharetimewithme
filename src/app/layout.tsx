@@ -4,6 +4,9 @@ import "./globals.css";
 import { useRouter } from "next/navigation";
 import { Analytics } from "@vercel/analytics/react"
 import 'animate.css';
+import { ALERT, isServerOff } from "@/components/utils";
+import { useEffect, useState } from "react";
+import Alert from "@/components/alert";
 
 
 
@@ -23,6 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter()
+
+
+
   return (
     <html lang="en">
       <head>

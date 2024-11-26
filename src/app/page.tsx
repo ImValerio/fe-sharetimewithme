@@ -1,6 +1,8 @@
 "use client"
+import Alert from '@/components/alert'
 import CreateInstance from '@/components/createInstance'
 import Loader from '@/components/loader'
+import { ALERT, isServerOff } from '@/components/utils'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
@@ -11,6 +13,17 @@ const Page = () => {
   if (isLoading)
     return <Loader />
 
+  const [showServerAlert, setShowServerAlert] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      const res = await isServerOff();
+      console.log("RES ", res)
+      setShowServerAlert(res)
+    };
+    init()
+  }, [])
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between w-full ">
       <div className="z-10 w-full md:max-w-xl items-center justify-between font-mono m-5 md:m-20 text-sm lg:flex flex-col ">
@@ -20,6 +33,7 @@ const Page = () => {
         {error}
         <CreateInstance setError={setError} setIsLoading={setIsLoading} />
 
+        {showServerAlert ? <Alert text="Google Cloud trial period is expired :(" type={ALERT.ERROR} /> : null}
       </div>
     </main>
   )
