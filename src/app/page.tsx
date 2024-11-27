@@ -9,20 +9,21 @@ import React, { useEffect, useState } from 'react'
 const Page = () => {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-
-  if (isLoading)
-    return <Loader />
-
   const [showServerAlert, setShowServerAlert] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       const res = await isServerOff();
-      console.log("RES ", res)
       setShowServerAlert(res)
     };
     init()
   }, [])
+
+
+
+  if (isLoading)
+    return <Loader />
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between w-full ">
