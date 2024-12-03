@@ -24,7 +24,7 @@ const Alert: React.FC<AlertProps> = ({ text, type }) => {
 
         const color = convertTypeIntoColor(type);
 
-        return `text-sm bg-${color}-900 rounded-md px-3 py-1 m-5`
+        return `text-xs bg-${color}-900 rounded-md px-3 py-1 m-5`
     }
 
     return (
