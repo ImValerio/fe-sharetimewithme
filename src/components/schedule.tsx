@@ -40,9 +40,9 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
 
     if (isResult) {
 
-        return <div className='m-2 bg-gray-800 flex flex-col rounded animate__animated animate__fadeInDown' >
-            <div className='flex justify-between py-2 bg-blue-900'>
-                <h2 className='text-2xl uppercase font-bold tracking-wider mx-2'>{schedule.username}</h2>
+        return <div className='m-2 bg-white text-black flex flex-col rounded animate__animated animate__fadeInDown' >
+            <div className='flex justify-between py-2 bg-primary'>
+                <h2 className='text-2xl text-white uppercase font-bold tracking-wider mx-2 '>{schedule.username}</h2>
                 <div>
                     <button onClick={() => {
                         navigator.clipboard.writeText(window.location.href).then(() => {
@@ -69,10 +69,10 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
                             }, 3000);
                         });
                     }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
                     </button>
                     <button onClick={() => setShowSchedules(!showSchedules)} className='text-2xl uppercase font-bold tracking-wider mx-2'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-info"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                     </button>
                 </div>
 
@@ -102,8 +102,8 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
     }
 
     return (
-        <div className='m-2 bg-gray-800 flex flex-col rounded animate__animated animate__fadeInDown' >
-            <div className='flex justify-between items-center bg-gray-900'>
+        <div className='m-2 bg-white flex flex-col rounded animate__animated animate__fadeInDown' >
+            <div className='flex justify-between items-center bg-primary'>
                 <h2 className='text-xl uppercase font-bold tracking-wider mx-2 p-1'>{schedule.username}</h2>
                 <span className='bg-red-700 h-full px-2 py-1 cursor-pointer' onClick={() => deleteRecord()}>X</span>
             </div>

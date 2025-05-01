@@ -4,6 +4,7 @@
 
 * {
   transition: all 0.5s;
+  font-family: sans-serif;
 }
 
 html,
@@ -21,11 +22,28 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: radial-gradient(circle, rgb(10 60 202) 0%, #042e52 100%);
+  background-color: #dacdb3;
 }
 
 *:focus {
   outline: none;
+}
+
+.main {
+  font-weight: bold;
+  background-color: #ffffff;
+  margin: 1em;
+}
+.nav {
+  background-color: transparent;
+  color: #4a4a4a;
+}
+.title {
+  color: black;
+}
+
+.header {
+  border-bottom: 1px solid #ccc;
 }
 
 .border-btm-green {
@@ -38,6 +56,35 @@ body {
   border-bottom: 2px solid gray;
 }
 
+.busy {
+  background-color: #c5e1e8;
+}
+
+.available {
+  background-color: #2e7e27;
+  color: white !important;
+}
+
+.busy,
+.available {
+  color: #4a4a4a;
+}
+.bg-primary,
+.create-btn {
+  background-color: rgb(40, 52, 117);
+}
+
+.create-btn {
+  font-weight: bold;
+}
+
+.create-btn:hover {
+  background-color: rgb(68, 49, 6);
+}
+
+.text-bold {
+  font-weight: bold;
+}
 .info-popup {
   position: fixed;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -92,7 +139,6 @@ body {
 input[type="text"] {
   background: transparent;
   border-bottom: 2px solid black;
-  color: white;
 }
 
 @keyframes l1 {
