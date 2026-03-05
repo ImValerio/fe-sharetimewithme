@@ -13,10 +13,6 @@ interface WeekProps {
 
 const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, binaryWeek = "0000000", setBinaryWeek = () => { }, isResult = false, isFormView = false, creationDate, isBackupWeek = false }) => {
     const [days, setDays] = useState(new Map<String, Number>())
-    const [isMobile, setIsMobile] = useState(false)
-
-
-    const basicBtn = isResult || isFormView ? "px-5 py-1 text-xl m-1 rounded " + (isFormView ? "grow " : "") : "px-3 py-1 m-1 md:grow-0 rounded "
 
     const getWeekDays = (locale: string) => {
         var baseDate = new Date(Date.UTC(2017, 0, 2)); // just a Monday
@@ -29,14 +25,12 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     }
 
     const formatDay = (day: string): string => {
-        day = day.substring(0, isResult ? 3 : 2)
-        return day.charAt(0).toUpperCase() + day.slice(1);
+        return day.substring(0, 3).toUpperCase()
     }
 
     const init = () => {
         const now = creationDate ? new Date(creationDate) : new Date()
-
-        setIsMobile(window.innerWidth <= 768)
+        
         const tmpDays = new Map<String, Number>()
         getWeekDays("en-Us").map(day => {
             day = formatDay(day)
@@ -49,130 +43,69 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
                     tmpDays.set(day, -1)
                 }
             })
-
         }
+        
         if (viewMode) {
             Array.from(tmpDays.keys()).forEach((day, i) => {
                 tmpDays.set(day, Number(binaryWeek[i]))
             })
         }
         setDays(tmpDays)
-
-
     }
-
 
     useEffect(() => {
         init()
     }, [binaryWeek])
 
-
     const toggleBtn = (day: String) => {
-        if (viewMode)
-            return
+        if (viewMode) return
 
         const currentValue = days.get(day)
-        if (currentValue === -1)
-            return
+        if (currentValue === -1) return
 
         setDays((days) => {
             const rv = new Map(days.set(day, currentValue === 0 ? 1 : 0));
-            binaryWeek = ""
-            rv.forEach((val) => binaryWeek = binaryWeek + (val === -1 ? 0 : val))
-            setBinaryWeek(binaryWeek, isCurrentWeek ? 0 : 1)
-
+            let newBinaryWeek = ""
+            rv.forEach((val) => newBinaryWeek = newBinaryWeek + (val === -1 ? 0 : val))
+            setBinaryWeek(newBinaryWeek, isCurrentWeek ? 0 : 1)
             return rv
         })
-
     }
 
-    if (isResult) {
-        if (binaryWeek === "0000000")
-            return <></>
-        return (
-            <div className='w-full flex flex-col justify-center align-center my-3 '>
-                {isCurrentWeek
-                    ? <h3 className={isBackupWeek ? 'text-xl' : 'text-2xl'}>Current week:</h3>
-                    : <h3 className={isBackupWeek ? 'text-xl' : 'text-2xl'}> Next week:</h3>
-                }
+    const renderDay = (day: String, i: number) => {
+        const val = days.get(day);
+        let statusClass = "busy";
+        if (val === 1) statusClass = "available";
+        if (val === -1) statusClass = "unavailable";
 
-                <div className='flex flex-wrap justify-start max-w-2xl'>
-                    {Array.from(days.keys()).map((day, i) => {
-                        const val = days.get(day);
-                        return <button key={`btn-${i}`} className={
-                            val === 1
-                                ? basicBtn + "available border-btm-green "
-                                : val === -1
-                                    ? basicBtn + "bg-gray-700 hover:bg-gray-600 text-white cursor-not-allowed border-btm-gray"
-                                    : basicBtn + "busy border-btm-red hidden"
-                        } disabled={val !== -1 ? undefined : true}
-
-                            onClick={() => toggleBtn(day)}
-                        >{day}</button>
-                    })}
-
-
-                </div>
-            </div>
-        )
-    }
-
-    if (isFormView) {
+        if (isResult && val === 0) return null;
 
         return (
-            <div className='w-full flex flex-col justify-center align-center my-3'>
-                {isCurrentWeek
-                    ? <h3 className='text-2xl'>Current week:</h3>
-                    : <h3 className='text-2xl'> Next week:</h3>
-                }
-
-                <div className='flex flex-wrap justify-around max-w-2xl text-bold'>
-                    {Array.from(days.keys()).map((day, i) => {
-                        const val = days.get(day);
-                        return <button key={`btn-${i}`} className={
-                            val === 1
-                                ? basicBtn + "available border-btm-green "
-                                : val === -1
-                                    ? basicBtn + "bg-gray-700 hover:bg-gray-600 text-white cursor-not-allowed border-btm-gray"
-                                    : basicBtn + "busy border-btm-red "
-                        } disabled={val !== -1 ? undefined : true}
-
-                            onClick={() => toggleBtn(day)}
-                        >{day}</button>
-                    })}
-
-
-                </div>
-            </div>
+            <button 
+                key={`btn-${i}`} 
+                className={`day-btn ${statusClass} ${isFormView ? "flex-1" : "min-w-[64px]"}`}
+                disabled={val === -1}
+                onClick={() => toggleBtn(day)}
+            >
+                {day}
+            </button>
         )
     }
 
     return (
-        <div className='w-full flex flex-col justify-center align-center my-3'>
-            {isCurrentWeek
-                ? <h3 className='text-xl md:text-center text-black'>{isMobile ? "Current week:" : "C"}</h3>
-                : <h3 className='text-xl md:text-center text-black'>{isMobile ? "Next week:" : "N"}</h3>
-            }
-            <div className='flex md:flex-col justify-around max-w-2xl text-bold'>
-                {Array.from(days.keys()).map((day, i) => {
-                    const val = days.get(day);
-                    return <button key={`btn-${i}`} className={
-                        val === 1
-                            ? basicBtn + "available border-btm-green"
-                            : val === -1
-                                ? basicBtn + "bg-gray-700 hover:bg-gray-600 text-white cursor-not-allowed border-btm-gray"
-                                : basicBtn + "busy border-btm-red"
-                    } disabled={val !== -1 ? undefined : true}
+        <div className={`w-full flex flex-col mb-4 transition-apple`}>
+            <div className='flex items-center justify-between mb-4 border-b border-white/[0.03] pb-3'>
+                <h3 className='text-[10px] font-bold text-foreground/30 uppercase tracking-[0.2em]'>
+                    {isCurrentWeek ? 'Current week' : 'Next week'}
+                    {isBackupWeek && <span className='ml-3 text-primary'>[ Recommended ]</span>}
+                </h3>
+            </div>
 
-                        onClick={() => toggleBtn(day)}
-                    >{day}</button>
-                })}
-
-
+            <div className={`flex flex-wrap gap-2 ${isFormView ? "justify-between" : "justify-start"}`}>
+                {Array.from(days.keys()).map((day, i) => renderDay(day, i))}
             </div>
         </div>
     )
-
 }
 
 export default Week

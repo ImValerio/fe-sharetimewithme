@@ -7,9 +7,7 @@ import { HOST } from '@/components/utils'
 import Loader from '@/components/loader'
 
 const Page = ({ params }: { params: { id: string } }) => {
-
     const router = useRouter()
-
     const instanceId = params.id
     const [isLoading, setIsLoading] = useState(true)
     const [schedules, setSchedules] = useState<Schedule[]>([])
@@ -25,50 +23,39 @@ const Page = ({ params }: { params: { id: string } }) => {
         }
 
         const binaryWeeksMaps = [new Map<number, number>(), new Map<number, number>()]
-        let rv: string[] = []
-
         schedules.forEach(schedule => {
             schedule.binaryWeeks.forEach((binaryWeek, mapIndex) => {
-
                 for (let i = 0; i < binaryWeek.length; i++) {
-                    let value = 0;
-                    let inc = 0
-                    value = binaryWeeksMaps[mapIndex].get(i) ?? 0;
-                    if (Number(binaryWeek[i]) === 1)
-                        inc = 1
+                    let value = binaryWeeksMaps[mapIndex].get(i) ?? 0;
+                    let inc = Number(binaryWeek[i]) === 1 ? 1 : 0;
                     binaryWeeksMaps[mapIndex].set(i, value + inc);
                 }
-
             })
-
         });
 
-
-        setResultWeeks(getResultWeek(binaryWeeksMaps, schedules.length))
-        if (resultWeeks.every(week => week === "0000000")) {
+        const res = getResultWeek(binaryWeeksMaps, schedules.length);
+        setResultWeeks(res)
+        
+        if (res.every(week => week === "0000000")) {
             let upperBound = schedules.length - 1
-            let rv: string[] = []
-            while (upperBound > 0 && (rv.length === 0 || rv.every(week => week === "0000000"))) {
-                rv = getResultWeek(binaryWeeksMaps, upperBound)
+            let backup: string[] = []
+            while (upperBound > 0 && (backup.length === 0 || backup.every(week => week === "0000000"))) {
+                backup = getResultWeek(binaryWeeksMaps, upperBound)
                 upperBound--;
             }
-
-            setBackupWeeks(rv)
+            setBackupWeeks(backup)
         } else {
             setBackupWeeks([])
         }
-
-
     }
 
     const getResultWeek = (binaryWeeksMaps: Map<number, number>[], upperBound: number) => {
         const rv: string[] = []
-        binaryWeeksMaps.map(maps => {
+        binaryWeeksMaps.forEach(maps => {
             let resultString = "";
             Array.from(maps.values()).forEach(value => {
-                resultString += (value === upperBound) ? "1" : "0";
+                resultString += (value >= upperBound) ? "1" : "0";
             });
-
             rv.push(resultString)
         })
         return rv
@@ -79,50 +66,80 @@ const Page = ({ params }: { params: { id: string } }) => {
             const res = await fetch(HOST + `/instance/${instanceId}`)
             if (res.status === 200) {
                 const data: Schedule[] = await res.json();
-
-                if (data.length === 0 || !data[0].instanceId)
-                    router.push("/")
-
+                if (data.length === 0 || !data[0].instanceId) router.push("/")
                 calcResultSchedule(data)
                 setSchedules([...data])
-
                 setIsLoading(false)
                 return
             }
-
             router.push("/")
-
         }
-
         checkInstanceId();
-    }, [])
+    }, [instanceId])
 
-
-    if (isLoading) {
-        return (
-            <Loader />
-        )
-    }
+    if (isLoading) return <Loader />
 
     return (
-        <div className='w-full h-full flex justify-center items-center '>
-            <div className='h-full w-full flex-col max-w-2xl justify-center items-center'>
-                <Schedule schedule={{ binaryWeeks: resultWeeks, username: "RESULT", instanceId: "", backupWeeks: backupWeeks }} isResult={true} showSchedules={showSchedules} setShowSchedules={setShowSchedules} />
-                {showSchedules && <div className='overflow-y-auto w-full flex justify-around '>
-                    {schedules.map((schedule, i) => {
-                        return <Schedule key={`schedule-${i}`} schedule={schedule} setSchedules={setSchedules} calcResultSchedule={calcResultSchedule} />
-                    })}
-                </div>}
+        <div className='w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center animate-apple-reveal'>
+            <header className='mb-24 flex flex-col items-center gap-8 w-full border-b border-white/[0.03] pb-16'>
+                <div className='cursor-pointer transition-apple hover:scale-105 active:scale-95' onClick={() => router.push("/")}>
+                  <img className="w-12 h-12 invert opacity-90" src='logo_black.png' alt="Logo" />
+                </div>
+                
+                <div className='flex flex-col items-center'>
+                    <h2 className='text-4xl md:text-5xl font-extrabold tracking-tight mb-4'>Meeting results</h2>
+                    <p className='text-sm font-medium text-foreground/40 bg-white/[0.05] px-4 py-1.5 rounded-full select-all'>
+                      ID: {instanceId}
+                    </p>
+                </div>
+            </header>
 
-                {error &&
-                    <div className='my-2'>
-                        <span className='text-red-500'>ERROR: </span>{error}
+            <section className='w-full mb-32 flex flex-col items-center'>
+                <div className='w-full glass rounded-apple p-8 md:p-16'>
+                    <Schedule 
+                        schedule={{ binaryWeeks: resultWeeks, username: "Combined schedule", instanceId: instanceId, backupWeeks: backupWeeks }} 
+                        isResult={true} 
+                        showSchedules={showSchedules} 
+                        setShowSchedules={setShowSchedules} 
+                    />
+                </div>
+
+                {showSchedules && (
+                    <div className='w-full mt-24 space-y-12 animate-apple-reveal'>
+                        <div className='flex items-center justify-between border-b border-white/[0.03] pb-6'>
+                            <h4 className='text-xl font-bold'>Individual schedules</h4>
+                            <span className='text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full'>
+                                {schedules.length} participants
+                            </span>
+                        </div>
+                        
+                        <div className='grid grid-cols-1 gap-12'>
+                            {schedules.map((schedule, i) => (
+                                <Schedule key={`schedule-${i}`} schedule={schedule} setSchedules={setSchedules} calcResultSchedule={calcResultSchedule} />
+                            ))}
+                        </div>
                     </div>
-                }
-                <CreateInstance instanceId={instanceId} setSchedules={setSchedules}
-                    calcResultSchedule={calcResultSchedule} setError={setError} creationDate={schedules[0].creationDate} setIsLoading={setIsLoading} />
-            </div>
-        </div >
+                )}
+            </section>
+
+            <section className='w-full glass rounded-apple p-8 md:p-16 relative overflow-hidden'>
+                <div className='flex flex-col mb-12 text-left'>
+                    <h4 className='text-3xl font-extrabold tracking-tight'>Add your availability</h4>
+                    <p className='text-sm font-medium text-foreground/40 mt-3'>Your schedule will be combined with the group.</p>
+                </div>
+                
+                {error && <div className='my-6 bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-red-500 text-xs font-bold'>Error: {error}</div>}
+                
+                <CreateInstance 
+                    instanceId={instanceId} 
+                    setSchedules={setSchedules}
+                    calcResultSchedule={calcResultSchedule} 
+                    setError={setError} 
+                    creationDate={schedules[0]?.creationDate} 
+                    setIsLoading={setIsLoading} 
+                />
+            </section>
+        </div>
     )
 }
 

@@ -2,153 +2,111 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  transition: all 0.5s;
-  font-family: sans-serif;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-}
-
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  /* Pro Dark Palette */
+  --background: 12% 0 0;          /* Deep Graphite */
+  --foreground: 98% 0 0;          /* Off White */
+  --primary: 60% 0.2 250;         /* Vibrant Apple Blue */
+  --accent: 60% 0.2 250;          /* Same as primary for consistency */
+  --muted: 22% 0 0;               /* Soft Shadow Gray */
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background-color: #dacdb3;
-}
-
-*:focus {
-  outline: none;
-}
-
-.main {
-  font-weight: bold;
-  background-color: #ffffff;
-  margin: 1em;
-}
-.nav {
-  background-color: transparent;
-  color: #4a4a4a;
-}
-.title {
-  color: black;
-}
-
-.header {
-  border-bottom: 1px solid #ccc;
-}
-
-.border-btm-green {
-  border-bottom: 2px solid green;
-}
-.border-btm-red {
-  border-bottom: 2px solid red;
-}
-.border-btm-gray {
-  border-bottom: 2px solid gray;
-}
-
-.busy {
-  background-color: #c5e1e8;
-}
-
-.available {
-  background-color: #2e7e27;
-  color: white !important;
-}
-
-.busy,
-.available {
-  color: #4a4a4a;
-}
-.bg-primary,
-.create-btn {
-  background-color: rgb(40, 52, 117);
-}
-
-.create-btn {
-  font-weight: bold;
-}
-
-.create-btn:hover {
-  background-color: rgb(29, 38, 88);
-}
-
-.text-bold {
-  font-weight: bold;
-}
-.info-popup {
-  position: fixed;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0.8em 1.6em;
-  background-color: #323232; /* Material Design spec color for dark tooltips */
-  color: white;
-  border-radius: 4px;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); /* Material Design elevation z=2 */
-  z-index: 1000;
-}
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  max-width: 500px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1050; /* High z-index to ensure it's on top of other content */
-}
-
-.loader {
-  width: 80px;
-  aspect-ratio: 1;
-  display: flex;
-  color: white;
-  border: 4px solid;
-  box-sizing: border-box;
-  border-radius: 50%;
-  background: radial-gradient(circle 5px, currentColor 95%, transparent),
-    linear-gradient(currentColor 50%, #0000 0) 50%/4px 60% no-repeat;
-  animation: l1 3s infinite linear;
-}
-.loader:before {
-  content: "";
-  flex: 1;
-  background: linear-gradient(currentColor 50%, #0000 0) 50%/4px 80% no-repeat;
-  animation: inherit;
-}
-
-input[type="text"] {
-  background: transparent;
-  border-bottom: 2px solid black;
-}
-
-@keyframes l1 {
-  100% {
-    transform: rotate(1turn);
+@layer base {
+  * {
+    @apply border-foreground/[0.05];
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   }
 }
 
 @layer utilities {
+  .font-sans {
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  .glass {
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] shadow-2xl;
+  }
+
+  .rounded-apple {
+    border-radius: 24px;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Polished Easing */
+.transition-apple {
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Interactive Grid - Simple & Clean */
+.day-btn {
+  @apply relative px-5 py-4 text-xs font-semibold rounded-xl transition-apple bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.08] active:scale-95;
+}
+
+.day-btn.available {
+  @apply bg-primary text-white border-transparent shadow-[0_8px_20px_-4px_oklch(var(--primary)/0.4)];
+}
+
+.day-btn.busy {
+  @apply bg-white/[0.02] text-foreground/20;
+}
+
+.day-btn.unavailable {
+  @apply bg-transparent text-foreground/5 cursor-not-allowed border-dashed border-white/[0.05];
+}
+
+/* Polished Components */
+.input-apple {
+  @apply w-full bg-white/[0.03] border border-white/[0.08] px-8 py-6 text-2xl md:text-3xl font-bold text-foreground placeholder:text-foreground/10 focus:bg-white/[0.05] focus:border-white/[0.2] transition-apple outline-none rounded-2xl;
+}
+
+.button-apple {
+  @apply relative overflow-hidden bg-foreground text-background px-10 py-5 text-sm font-bold hover:opacity-90 active:scale-95 transition-apple rounded-full;
+}
+
+.button-secondary {
+  @apply px-10 py-5 text-sm font-bold bg-white/[0.05] hover:bg-white/[0.1] active:scale-95 transition-apple rounded-full;
+}
+
+/* Hero Typography */
+.hero-title {
+  @apply text-6xl md:text-8xl font-extrabold tracking-[-0.03em] leading-[0.95] text-balance;
+}
+
+.hero-subtitle {
+  @apply text-lg md:text-xl font-medium text-foreground/40 mt-8 max-w-xl leading-relaxed;
+}
+
+/* Loader // Spinner */
+.loader-clock {
+  width: 40px;
+  height: 40px;
+  border: 3px solid oklch(var(--foreground) / 0.1);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-foreground/10 rounded-full hover:bg-foreground/20;
 }

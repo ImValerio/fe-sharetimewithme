@@ -8,10 +8,23 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        background: "oklch(var(--background) / <alpha-value>)",
+        foreground: "oklch(var(--foreground) / <alpha-value>)",
+        primary: {
+          DEFAULT: "oklch(var(--primary) / <alpha-value>)",
+          foreground: "oklch(var(--background) / <alpha-value>)",
+        },
+        accent: "oklch(var(--accent) / <alpha-value>)",
+        muted: "oklch(var(--muted) / <alpha-value>)",
+      },
+      fontFamily: {
+        display: ["var(--font-display)", "serif"],
+        sans: ["var(--font-sans)", "sans-serif"],
+      },
+      letterSpacing: {
+        tightest: "-.075em",
+        tighter: "-.05em",
       },
     },
   },
