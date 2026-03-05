@@ -55,28 +55,28 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
     }
 
     return (
-        <div className={`w-full transition-apple ${isResult ? "mb-0" : "mb-8 pb-8 border-b border-white/[0.03]"}`}>
+        <div className={`w-full transition-apple ${isResult ? "mb-0" : "mb-8 pb-8 border-b border-white/[0.03] animate-reveal stagger-1"}`}>
             <div className='flex justify-between items-start mb-10'>
-                <div className='flex flex-col text-left'>
+                <div className='flex flex-col text-left animate-reveal stagger-1'>
                     <h2 className={`font-bold tracking-tight leading-none ${isResult ? "text-4xl md:text-5xl text-primary" : "text-2xl text-foreground/80"}`}>
                         {schedule.username}
                     </h2>
                     {isResult && <p className='text-xs font-semibold text-foreground/30 mt-3'>Aggregated availability of the group</p>}
                 </div>
                 
-                <div className='flex gap-4'>
+                <div className='flex gap-4 animate-reveal stagger-2'>
                     {isResult && (
                         <>
-                            <button onClick={copyToClipboard} className='text-xs font-bold px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full transition-apple'>
+                            <button onClick={copyToClipboard} className='text-xs font-bold px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full transition-apple active:scale-95'>
                                 Copy link
                             </button>
-                            <button onClick={() => setShowSchedules(!showSchedules)} className={`text-xs font-bold px-4 py-2 rounded-full transition-apple ${showSchedules ? "bg-primary text-white" : "bg-white/5 hover:bg-white/10"}`}>
+                            <button onClick={() => setShowSchedules(!showSchedules)} className={`text-xs font-bold px-4 py-2 rounded-full transition-apple active:scale-95 ${showSchedules ? "bg-primary text-white shadow-lg" : "bg-white/5 hover:bg-white/10"}`}>
                                 {showSchedules ? "Hide details" : "View participants"}
                             </button>
                         </>
                     )}
                     {!isResult && (
-                        <button onClick={deleteRecord} className='text-xs font-bold text-foreground/20 hover:text-red-500 transition-apple'>
+                        <button onClick={deleteRecord} className='text-xs font-bold text-foreground/20 hover:text-red-500 transition-apple active:scale-90'>
                             Remove
                         </button>
                     )}
@@ -85,7 +85,7 @@ const Schedule: React.FC<ScheduleProps> = ({ schedule, setSchedules, calcResultS
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12'>
                 {schedule.binaryWeeks.length === 0 && isResult && (
-                    <p className='text-sm font-medium text-foreground/20'>Add at least two schedules to see results.</p>
+                    <p className='text-sm font-medium text-foreground/20 animate-reveal stagger-3'>Add at least two schedules to see results.</p>
                 )}
                 {schedule.binaryWeeks.every(week => week === "0000000") && isResult && schedule.backupWeeks && schedule.backupWeeks.map((binaryWeek, i) => (
                     <Week key={i} isCurrentWeek={i === 0} binaryWeek={binaryWeek} viewMode={true} isResult={true} isBackupWeek={true} />

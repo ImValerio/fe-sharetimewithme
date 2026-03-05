@@ -83,7 +83,8 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
         return (
             <button 
                 key={`btn-${i}`} 
-                className={`day-btn ${statusClass} ${isFormView ? "flex-1" : "min-w-[64px]"}`}
+                className={`day-btn animate-reveal ${statusClass} ${isFormView ? "flex-1" : "min-w-[64px]"}`}
+                style={{ animationDelay: `${(isCurrentWeek ? 100 : 400) + (i * 60)}ms` }}
                 disabled={val === -1}
                 onClick={() => toggleBtn(day)}
             >
@@ -93,8 +94,8 @@ const Week: React.FC<WeekProps> = ({ isCurrentWeek = false, viewMode = false, bi
     }
 
     return (
-        <div className={`w-full flex flex-col mb-4 transition-apple`}>
-            <div className='flex items-center justify-between mb-4 border-b border-white/[0.03] pb-3'>
+        <div className={`w-full flex flex-col mb-4`}>
+            <div className='flex items-center justify-between mb-4 border-b border-white/[0.03] pb-3 animate-reveal' style={{ animationDelay: isCurrentWeek ? '0ms' : '200ms' }}>
                 <h3 className='text-[10px] font-bold text-foreground/30 uppercase tracking-[0.2em]'>
                     {isCurrentWeek ? 'Current week' : 'Next week'}
                     {isBackupWeek && <span className='ml-3 text-primary'>[ Recommended ]</span>}

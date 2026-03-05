@@ -9,6 +9,10 @@
   --primary: 60% 0.2 250;         /* Vibrant Apple Blue */
   --accent: 60% 0.2 250;          /* Same as primary for consistency */
   --muted: 22% 0 0;               /* Soft Shadow Gray */
+
+  /* Refined Easing - Damped & Elegant */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @layer base {
@@ -19,6 +23,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -32,7 +37,7 @@
   }
 
   .rounded-apple {
-    border-radius: 24px;
+    border-radius: 28px;
   }
 
   .text-balance {
@@ -40,18 +45,35 @@
   }
 }
 
-/* Polished Easing */
-.transition-apple {
-  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+/* --- Animation System --- */
+
+@keyframes fade-in-scale {
+  from { opacity: 0; transform: scale(0.98) translateY(10px); filter: blur(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 }
 
-/* Interactive Grid - Simple & Clean */
+.animate-reveal {
+  animation: fade-in-scale 0.8s var(--ease-out-expo) forwards;
+}
+
+/* Staggered Entrance Utilities (Up to 10 items) */
+.stagger-1 { animation-delay: 100ms; }
+.stagger-2 { animation-delay: 150ms; }
+.stagger-3 { animation-delay: 200ms; }
+.stagger-4 { animation-delay: 250ms; }
+.stagger-5 { animation-delay: 300ms; }
+
+/* Micro-interactions */
+.transition-apple {
+  transition: all 0.5s var(--ease-out-expo);
+}
+
 .day-btn {
-  @apply relative px-5 py-4 text-xs font-semibold rounded-xl transition-apple bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.08] active:scale-95;
+  @apply relative px-5 py-4 text-[13px] font-bold rounded-2xl transition-apple bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.08] active:scale-[0.94];
 }
 
 .day-btn.available {
-  @apply bg-primary text-white border-transparent shadow-[0_8px_20px_-4px_oklch(var(--primary)/0.4)];
+  @apply bg-primary text-white border-transparent shadow-[0_12px_24px_-8px_oklch(var(--primary)/0.5)];
 }
 
 .day-btn.busy {
@@ -59,54 +81,60 @@
 }
 
 .day-btn.unavailable {
-  @apply bg-transparent text-foreground/5 cursor-not-allowed border-dashed border-white/[0.05];
+  @apply bg-transparent text-foreground/5 cursor-not-allowed border-dashed border-white/[0.03];
 }
 
-/* Polished Components */
+/* Smooth Height Transition Trick */
+.expand-container {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease-out-expo);
+}
+
+.expand-container.open {
+  grid-template-rows: 1fr;
+}
+
+.expand-content {
+  overflow: hidden;
+}
+
+/* Form Polish */
 .input-apple {
-  @apply w-full bg-white/[0.03] border border-white/[0.08] px-8 py-6 text-2xl md:text-3xl font-bold text-foreground placeholder:text-foreground/10 focus:bg-white/[0.05] focus:border-white/[0.2] transition-apple outline-none rounded-2xl;
+  @apply w-full bg-white/[0.04] border border-white/[0.06] px-8 py-6 text-2xl font-bold text-foreground placeholder:text-foreground/10 focus:bg-white/[0.07] focus:border-primary/30 transition-apple outline-none rounded-[22px];
 }
 
 .button-apple {
-  @apply relative overflow-hidden bg-foreground text-background px-10 py-5 text-sm font-bold hover:opacity-90 active:scale-95 transition-apple rounded-full;
-}
-
-.button-secondary {
-  @apply px-10 py-5 text-sm font-bold bg-white/[0.05] hover:bg-white/[0.1] active:scale-95 transition-apple rounded-full;
+  @apply relative overflow-hidden bg-foreground text-background px-12 py-5 text-sm font-bold hover:bg-white active:scale-95 transition-apple rounded-full shadow-lg;
 }
 
 /* Hero Typography */
 .hero-title {
-  @apply text-6xl md:text-8xl font-extrabold tracking-[-0.03em] leading-[0.95] text-balance;
+  @apply text-7xl md:text-[10rem] font-extrabold tracking-[-0.04em] leading-[0.9] text-balance;
 }
 
 .hero-subtitle {
-  @apply text-lg md:text-xl font-medium text-foreground/40 mt-8 max-w-xl leading-relaxed;
+  @apply text-xl md:text-2xl font-medium text-foreground/40 mt-8 max-w-2xl leading-relaxed;
 }
 
-/* Loader // Spinner */
+/* Loader // Apple Spinner Refinement */
 .loader-clock {
-  width: 40px;
-  height: 40px;
-  border: 3px solid oklch(var(--foreground) / 0.1);
+  width: 44px;
+  height: 44px;
+  border: 3px solid oklch(var(--foreground) / 0.05);
   border-top-color: var(--primary);
   border-radius: 50%;
-  animation: spinner 0.8s linear infinite;
+  animation: spinner 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes spinner {
   to { transform: rotate(360deg); }
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-foreground/10 rounded-full hover:bg-foreground/20;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

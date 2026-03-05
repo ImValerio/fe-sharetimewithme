@@ -28,7 +28,7 @@ const Page = () => {
       {/* Hero Section */}
       <header className='mb-24 flex flex-col items-center'>
         <div className='mb-12 cursor-pointer transition-apple hover:scale-105 active:scale-95' onClick={() => router.push("/")}>
-          <img className="w-16 h-16 invert opacity-90" src='logo_black.png' alt="Logo" />
+          <img className="w-24 h-24 invert opacity-90" src='logo_black.png' alt="Logo" />
         </div>
         
         <h1 className='hero-title'>
