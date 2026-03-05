@@ -81,9 +81,10 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     return (
         <div className='w-full max-w-5xl mx-auto px-6 py-20 flex flex-col items-center'>
-            <header className='mb-24 flex flex-col items-center gap-8 w-full border-b border-white/[0.03] pb-16'>
-                <div className='cursor-pointer transition-apple hover:scale-105 active:scale-95 animate-reveal' onClick={() => router.push("/")}>
-                  <img className="w-20 h-20 invert opacity-90" src='logo_black.png' alt="Logo" />
+            <header className='mb-24 flex flex-col items-center gap-10 w-full border-b border-white/[0.03] pb-16'>
+                <div className='cursor-pointer group relative transition-apple hover:scale-105 active:scale-95 animate-reveal' onClick={() => router.push("/")}>
+                  <div className='absolute inset-0 bg-primary/10 blur-3xl rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-apple duration-700'></div>
+                  <img className="w-32 h-32 invert opacity-90 relative z-10" src='logo_black.png' alt="Logo" />
                 </div>
                 
                 <div className='flex flex-col items-center'>

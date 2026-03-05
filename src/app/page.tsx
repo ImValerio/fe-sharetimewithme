@@ -26,9 +26,16 @@ const Page = () => {
   return (
     <div className='w-full max-w-5xl mx-auto px-6 py-20 md:py-32 flex flex-col items-center text-center'>
       {/* Hero Section */}
-      <header className='mb-24 flex flex-col items-center'>
-        <div className='mb-12 cursor-pointer transition-apple hover:scale-105 active:scale-95' onClick={() => router.push("/")}>
-          <img className="w-24 h-24 invert opacity-90" src='logo_black.png' alt="Logo" />
+      <header className='mb-32 flex flex-col items-center'>
+        <div className='mb-16 cursor-pointer group relative' onClick={() => router.push("/")}>
+          {/* Subtle Pro Glow */}
+          <div className='absolute inset-0 bg-primary/20 blur-[80px] rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-apple duration-1000'></div>
+          
+          <img 
+            className="w-48 h-48 md:w-64 md:h-64 invert opacity-90 transition-apple group-hover:scale-105 group-hover:opacity-100 group-active:scale-95 relative z-10" 
+            src='logo_black.png' 
+            alt="Logo" 
+          />
         </div>
         
         <h1 className='hero-title'>
